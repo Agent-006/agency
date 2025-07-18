@@ -1,4 +1,9 @@
-import React from "react";
+"use client";
+
+import Image from "next/image";
+import React, { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import gsap from "gsap";
 
 const testimonials = [
     {
@@ -21,41 +26,83 @@ const testimonials = [
     },
 ];
 
-// const cardVariants = {
-//     offscreen: { opacity: 0, y: 60, scale: 0.95 },
-//     onscreen: {
-//         opacity: 1,
-//         y: 0,
-//         scale: 1,
-//         transition: {
-//             type: "spring" as const,
-//             bounce: 0.22,
-//             duration: 0.7,
-//         },
-//     },
-// };
+const cardVariants = {
+    hidden: { opacity: 0, y: 80, scale: 0.95 },
+    visible: (i: number) => ({
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            // Remove 'type' or use the correct enum/type if available
+            bounce: 0.22,
+            duration: 0.7,
+            delay: i * 0.15,
+        },
+    }),
+};
 
 const TestimonialsSection = () => {
+    const sectionRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (sectionRef.current) {
+            gsap.fromTo(
+                sectionRef.current.querySelectorAll(".testimonial-card"),
+                { opacity: 0, y: 60 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    stagger: 0.18,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top 80%",
+                    },
+                }
+            );
+        }
+    }, []);
+
     return (
         <section className="py-24 bg-background">
-            <div className="container px-4 md:px-8 mx-auto">
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-white drop-shadow">
+            <div className="container px-4 md:px-8 mx-auto" ref={sectionRef}>
+                <motion.h2
+                    initial={{ opacity: 0, y: -40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, type: "spring", bounce: 0.18 }}
+                    viewport={{ once: true }}
+                    className="text-3xl md:text-4xl font-bold text-center mb-4 text-white drop-shadow"
+                >
                     Client Love
-                </h2>
-                <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-16">
+                </motion.h2>
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.1 }}
+                    viewport={{ once: true }}
+                    className="text-muted-foreground text-center max-w-2xl mx-auto mb-16"
+                >
                     Real feedback from real people. Here’s what our partners say
                     about working with us.
-                </p>
+                </motion.p>
                 <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch">
-                    {testimonials.map((t) => (
-                        <div key={t.name} className="flex-1">
+                    {testimonials.map((t, i) => (
+                        <motion.div
+                            key={t.name}
+                            className="flex-1 testimonial-card"
+                            custom={i}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.3 }}
+                            variants={cardVariants}
+                        >
                             <div
-                                key={t.name}
                                 className="relative group flex-1 max-w-md mx-auto bg-gradient-to-br from-primary/10 via-background/60 to-white/10 border border-white/10 backdrop-blur-xl shadow-xl rounded-3xl px-8 py-10 flex flex-col items-center text-center hover:scale-105 hover:shadow-primary/30 hover:shadow-2xl transition-all duration-300"
                             >
                                 <div className="relative mb-6">
                                     <div className="absolute -inset-1 bg-primary/30 rounded-full blur-lg opacity-60 group-hover:opacity-90 transition" />
-                                    <img
+                                    <Image
                                         src={t.avatar}
                                         alt={t.name}
                                         width={96}
@@ -87,7 +134,7 @@ const TestimonialsSection = () => {
                                     aria-hidden="true"
                                 />
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
