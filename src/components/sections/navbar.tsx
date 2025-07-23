@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -60,23 +62,29 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export function NavigationMenuBar() {
+    const pathname = usePathname();
+    const [mounted, setMounted] = React.useState(false);
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+    // Helper to check if a link is active
+    const isActive = (href: string) => {
+        if (href === "/") return pathname === "/";
+        return pathname.startsWith(href);
+    };
     return (
         <header className="w-full flex justify-center">
-            <nav className="absolute left-1/2 -translate-x-1/2 mt-6 z-50 flex items-center justify-between gap-4 px-4 md:px-10 py-3 bg-white/10 backdrop-blur-md border border-white/10 text-white rounded-2xl shadow-2xl max-w-5xl w-[95vw]">
-                {/* Logo/Brand */}
-                <div className="flex items-center gap-2 select-none">
-                    <span className="text-2xl font-extrabold tracking-tight text-white drop-shadow">
-                        Agency
-                    </span>
-                </div>
-                {/* Hamburger for mobile using shadcn Sheet */}
-                <div className="sm:hidden flex items-center">
+            <nav className="absolute left-1/2 -translate-x-1/2 mt-3 z-50 flex items-center justify-between gap-2 px-2 md:px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/10 text-white rounded-2xl shadow-2xl max-w-2xl w-[90vw] min-h-[60px]">
+                {/* Mobile: Hamburger + Centered Logo */}
+                <div className="sm:hidden flex items-center justify-between w-full relative min-h-[40px]">
+                    {/* Hamburger */}
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 className="rounded-full p-2 text-white hover:bg-white/20"
+                                aria-label="Open navigation menu"
                             >
                                 <svg
                                     width="28"
@@ -95,7 +103,9 @@ export function NavigationMenuBar() {
                             className="p-0 w-72 bg-white/90 dark:bg-zinc-900/95 border-r border-white/20 backdrop-blur-lg overflow-y-auto max-h-screen flex flex-col"
                         >
                             <SheetTitle asChild>
-                                <VisuallyHidden>Agency Navigation</VisuallyHidden>
+                                <VisuallyHidden>
+                                    Agency Navigation
+                                </VisuallyHidden>
                             </SheetTitle>
                             <div className="flex items-center px-6 py-4 border-b border-white/10">
                                 <span className="text-2xl font-extrabold tracking-tight text-black dark:text-white select-none">
@@ -127,9 +137,7 @@ export function NavigationMenuBar() {
                                                             {component.title}
                                                         </div>
                                                         <div className="text-xs opacity-70">
-                                                            {
-                                                                component.description
-                                                            }
+                                                            {component.description}
                                                         </div>
                                                     </Link>
                                                 </SheetClose>
@@ -170,99 +178,380 @@ export function NavigationMenuBar() {
                                     </Link>
                                 </SheetClose>
                             </nav>
-                            <div className="px-6 pb-6 mt-auto">
-                                <Button className="w-full rounded-full px-7 py-3 font-bold shadow-lg bg-primary text-black border-0 hover:bg-primary/90 hover:shadow-primary/40 hover:shadow-lg focus:ring-2 focus:ring-primary/60 focus:outline-none transition-all duration-200">
+                            <div className="px-6 pb-6">
+                                <Button className="w-full rounded-full px-7 py-3 font-bold shadow-lg bg-primary text-black border-0 hover:bg-primary/90 hover:shadow-primary/40 hover:shadow-lg transition-all duration-200">
                                     Get Free Consultation
                                 </Button>
                             </div>
                         </SheetContent>
                     </Sheet>
+                    {/* Centered Agency Logo (absolute center) */}
+                    <Link
+                        href="/"
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none"
+                        aria-label="Agency Home"
+                        tabIndex={-1}
+                    >
+                        <span className="text-xl font-extrabold tracking-tight text-white drop-shadow-lg px-2 py-0.5 rounded-lg bg-gradient-to-r from-primary to-cyan-400/80 bg-clip-text" style={{letterSpacing: '0.04em'}}>Agency</span>
+                    </Link>
                 </div>
                 {/* Desktop Navigation */}
                 <div className="hidden sm:flex flex-1 items-center justify-center">
                     <NavigationMenu className="bg-transparent" viewport={false}>
-                        <NavigationMenuList className="flex items-center gap-2 md:gap-4">
-                            <NavigationMenuItem>
-                                <NavigationMenuLink
-                                    asChild
-                                    className={
-                                        navigationMenuTriggerStyle() +
-                                        " px-5 py-2 rounded-full bg-white/15 border border-white/20 text-white shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white/30 hover:scale-105 hover:shadow-lg focus:bg-white/25 focus:scale-105 focus:shadow-lg"
-                                    }
-                                >
-                                    <Link href="/">Home</Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger className="px-5 py-2 rounded-full bg-white/15 border border-white/20 text-white shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white/30 hover:scale-105 hover:shadow-lg focus:bg-white/25 focus:scale-105 focus:shadow-lg">
-                                    Service
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent className="bg-white/20 backdrop-blur-lg border border-white/20 text-white shadow-2xl rounded-2xl mt-2">
-                                    <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] p-4">
-                                        {components.map((component) => (
-                                            <ListItem
-                                                key={component.title}
-                                                title={component.title}
-                                                href={component.href}
-                                            >
-                                                {component.description}
-                                            </ListItem>
-                                        ))}
-                                    </ul>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink
-                                    asChild
-                                    className={
-                                        navigationMenuTriggerStyle() +
-                                        " px-5 py-2 rounded-full bg-white/15 border border-white/20 text-white shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white/30 hover:scale-105 hover:shadow-lg focus:bg-white/25 focus:scale-105 focus:shadow-lg"
-                                    }
-                                >
-                                    <Link href="/about">About</Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink
-                                    asChild
-                                    className={
-                                        navigationMenuTriggerStyle() +
-                                        " px-5 py-2 rounded-full bg-white/15 border border-white/20 text-white shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white/30 hover:scale-105 hover:shadow-lg focus:bg-white/25 focus:scale-105 focus:shadow-lg"
-                                    }
-                                >
-                                    <Link href="/blog">Blog</Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink
-                                    asChild
-                                    className={
-                                        navigationMenuTriggerStyle() +
-                                        " px-5 py-2 rounded-full bg-white/15 border border-white/20 text-white shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white/30 hover:scale-105 hover:shadow-lg focus:bg-white/25 focus:scale-105 focus:shadow-lg"
-                                    }
-                                >
-                                    <Link href="/projects">Projects</Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink
-                                    asChild
-                                    className={
-                                        navigationMenuTriggerStyle() +
-                                        " px-5 py-2 rounded-full bg-white/15 border border-white/20 text-white shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white/30 hover:scale-105 hover:shadow-lg focus:bg-white/25 focus:scale-105 focus:shadow-lg"
-                                    }
-                                >
-                                    <Link href="/contact">Contact Us</Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
+                        <NavigationMenuList className="flex items-center gap-2 md:gap-4 relative">
+                            {/* Animated underline */}
+                            {mounted && (
+                                <AnimatePresence>
+                                    {[
+                                        { href: "/", label: "Home" },
+                                        { href: "/about", label: "About" },
+                                        { href: "/blog", label: "Blog" },
+                                        {
+                                            href: "/projects",
+                                            label: "Projects",
+                                        },
+                                        {
+                                            href: "/contact",
+                                            label: "Contact Us",
+                                        },
+                                    ].map((item) =>
+                                        isActive(item.href) ? (
+                                            <motion.div
+                                                key={item.href}
+                                                layoutId="nav-underline"
+                                                className="absolute bottom-0 h-[3px] rounded-full bg-primary left-0"
+                                                style={{
+                                                    width: `var(--underline-width-${
+                                                        item.href.replace(
+                                                            "/",
+                                                            ""
+                                                        ) || "home"
+                                                    })`,
+                                                    left: `var(--underline-left-${
+                                                        item.href.replace(
+                                                            "/",
+                                                            ""
+                                                        ) || "home"
+                                                    })`,
+                                                    transition:
+                                                        "all 0.3s cubic-bezier(.4,0,.2,1)",
+                                                }}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                            />
+                                        ) : null
+                                    )}
+                                </AnimatePresence>
+                            )}
+                            {/* Navlinks */}
+                            {mounted ? (
+                                <>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            id="nav-home"
+                                            className={
+                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
+                                                (isActive("/")
+                                                    ? " font-bold"
+                                                    : "")
+                                            }
+                                            ref={(el) => {
+                                                if (
+                                                    el &&
+                                                    typeof window !==
+                                                        "undefined"
+                                                ) {
+                                                    const rect =
+                                                        el.getBoundingClientRect();
+                                                    const parentRect =
+                                                        el.parentElement?.parentElement?.getBoundingClientRect();
+                                                    if (parentRect) {
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-width-home",
+                                                            `${rect.width}px`
+                                                        );
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-left-home",
+                                                            `${
+                                                                rect.left -
+                                                                parentRect.left
+                                                            }px`
+                                                        );
+                                                    }
+                                                }
+                                            }}
+                                        >
+                                            <Link href="/">Home</Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuTrigger className="px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative">
+                                            Service
+                                        </NavigationMenuTrigger>
+                                        <NavigationMenuContent className=" backdrop-blur-md border text-white shadow-2xl rounded-2xl mt-2">
+                                            <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] p-4">
+                                                {components.map((component) => (
+                                                    <ListItem
+                                                        key={component.title}
+                                                        title={component.title}
+                                                        href={component.href}
+                                                    >
+                                                        {component.description}
+                                                    </ListItem>
+                                                ))}
+                                            </ul>
+                                        </NavigationMenuContent>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            id="nav-about"
+                                            className={
+                                                navigationMenuTriggerStyle() +
+                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
+                                                (isActive("/about")
+                                                    ? " font-bold"
+                                                    : "")
+                                            }
+                                            ref={(el) => {
+                                                if (
+                                                    el &&
+                                                    typeof window !==
+                                                        "undefined"
+                                                ) {
+                                                    const rect =
+                                                        el.getBoundingClientRect();
+                                                    const parentRect =
+                                                        el.parentElement?.parentElement?.getBoundingClientRect();
+                                                    if (parentRect) {
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-width-about",
+                                                            `${rect.width}px`
+                                                        );
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-left-about",
+                                                            `${
+                                                                rect.left -
+                                                                parentRect.left
+                                                            }px`
+                                                        );
+                                                    }
+                                                }
+                                            }}
+                                        >
+                                            <Link href="/about">About</Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            id="nav-blog"
+                                            className={
+                                                navigationMenuTriggerStyle() +
+                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
+                                                (isActive("/blog")
+                                                    ? " font-bold"
+                                                    : "")
+                                            }
+                                            ref={(el) => {
+                                                if (
+                                                    el &&
+                                                    typeof window !==
+                                                        "undefined"
+                                                ) {
+                                                    const rect =
+                                                        el.getBoundingClientRect();
+                                                    const parentRect =
+                                                        el.parentElement?.parentElement?.getBoundingClientRect();
+                                                    if (parentRect) {
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-width-blog",
+                                                            `${rect.width}px`
+                                                        );
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-left-blog",
+                                                            `${
+                                                                rect.left -
+                                                                parentRect.left
+                                                            }px`
+                                                        );
+                                                    }
+                                                }
+                                            }}
+                                        >
+                                            <Link href="/blog">Blog</Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            id="nav-projects"
+                                            className={
+                                                navigationMenuTriggerStyle() +
+                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
+                                                (isActive("/projects")
+                                                    ? " font-bold"
+                                                    : "")
+                                            }
+                                            ref={(el) => {
+                                                if (
+                                                    el &&
+                                                    typeof window !==
+                                                        "undefined"
+                                                ) {
+                                                    const rect =
+                                                        el.getBoundingClientRect();
+                                                    const parentRect =
+                                                        el.parentElement?.parentElement?.getBoundingClientRect();
+                                                    if (parentRect) {
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-width-projects",
+                                                            `${rect.width}px`
+                                                        );
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-left-projects",
+                                                            `${
+                                                                rect.left -
+                                                                parentRect.left
+                                                            }px`
+                                                        );
+                                                    }
+                                                }
+                                            }}
+                                        >
+                                            <Link href="/projects">
+                                                Projects
+                                            </Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            id="nav-contact"
+                                            className={
+                                                navigationMenuTriggerStyle() +
+                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
+                                                (isActive("/contact")
+                                                    ? " font-bold"
+                                                    : "")
+                                            }
+                                            ref={(el) => {
+                                                if (
+                                                    el &&
+                                                    typeof window !==
+                                                        "undefined"
+                                                ) {
+                                                    const rect =
+                                                        el.getBoundingClientRect();
+                                                    const parentRect =
+                                                        el.parentElement?.parentElement?.getBoundingClientRect();
+                                                    if (parentRect) {
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-width-contact",
+                                                            `${rect.width}px`
+                                                        );
+                                                        document.documentElement.style.setProperty(
+                                                            "--underline-left-contact",
+                                                            `${
+                                                                rect.left -
+                                                                parentRect.left
+                                                            }px`
+                                                        );
+                                                    }
+                                                }
+                                            }}
+                                        >
+                                            <Link href="/contact">
+                                                Contact Us
+                                            </Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                </>
+                            ) : (
+                                <>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            className={
+                                                navigationMenuTriggerStyle() +
+                                                " px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative"
+                                            }
+                                        >
+                                            <Link href="/">Home</Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuTrigger className="px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative">
+                                            Service
+                                        </NavigationMenuTrigger>
+                                        <NavigationMenuContent className="bg-white/20 backdrop-blur-lg border border-white/20 text-white shadow-2xl rounded-2xl mt-2">
+                                            <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] p-4">
+                                                {components.map((component) => (
+                                                    <ListItem
+                                                        key={component.title}
+                                                        title={component.title}
+                                                        href={component.href}
+                                                    >
+                                                        {component.description}
+                                                    </ListItem>
+                                                ))}
+                                            </ul>
+                                        </NavigationMenuContent>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            className={
+                                                navigationMenuTriggerStyle() +
+                                                " px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative"
+                                            }
+                                        >
+                                            <Link href="/about">About</Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            className={
+                                                navigationMenuTriggerStyle() +
+                                                " px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative"
+                                            }
+                                        >
+                                            <Link href="/blog">Blog</Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            className={
+                                                navigationMenuTriggerStyle() +
+                                                " px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative"
+                                            }
+                                        >
+                                            <Link href="/projects">
+                                                Projects
+                                            </Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink
+                                            asChild
+                                            className={
+                                                navigationMenuTriggerStyle() +
+                                                " px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative"
+                                            }
+                                        >
+                                            <Link href="/contact">
+                                                Contact Us
+                                            </Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+                                </>
+                            )}
                         </NavigationMenuList>
                     </NavigationMenu>
-                </div>
-                {/* CTA Button - hidden on mobile */}
-                <div className="hidden sm:block">
-                    <Button className="rounded-full px-7 py-2.5 font-bold shadow-lg bg-primary text-black border-0 hover:bg-primary/90 hover:shadow-primary/40 hover:shadow-lg focus:ring-2 focus:ring-primary/60 focus:outline-none transition-all duration-200 [text-shadow:0_2px_12px_rgba(255,255,255,0.5)]">
-                        Get Free Consultation
-                    </Button>
                 </div>
             </nav>
         </header>

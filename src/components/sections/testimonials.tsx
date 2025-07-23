@@ -72,7 +72,7 @@ const TestimonialsSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, type: "spring", bounce: 0.18 }}
                     viewport={{ once: true }}
-                    className="text-3xl md:text-4xl font-bold text-center mb-4 text-white drop-shadow"
+                    className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground drop-shadow"
                 >
                     Client Love
                 </motion.h2>
@@ -98,41 +98,29 @@ const TestimonialsSection = () => {
                             variants={cardVariants}
                         >
                             <div
-                                className="relative group flex-1 max-w-md mx-auto bg-gradient-to-br from-primary/10 via-background/60 to-white/10 border border-white/10 backdrop-blur-xl shadow-xl rounded-3xl px-8 py-10 flex flex-col items-center text-center hover:scale-105 hover:shadow-primary/30 hover:shadow-2xl transition-all duration-300"
+                                className="relative group flex-1 max-w-md mx-auto bg-gradient-to-br from-white via-gray-50 to-blue-50 border border-gray-200 rounded-2xl px-7 py-9 flex flex-col items-center text-center shadow-lg hover:shadow-2xl hover:border-primary/60 transition-all duration-300"
                             >
-                                <div className="relative mb-6">
-                                    <div className="absolute -inset-1 bg-primary/30 rounded-full blur-lg opacity-60 group-hover:opacity-90 transition" />
+                                <div className="relative mb-5">
+                                    <span className="absolute -inset-2 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition" />
                                     <Image
                                         src={t.avatar}
                                         alt={t.name}
-                                        width={96}
-                                        height={96}
-                                        className="rounded-full border-4 border-primary/60 shadow-lg relative z-10"
+                                        width={80}
+                                        height={80}
+                                        className="rounded-full border-2 border-primary/40 shadow-md relative z-10"
                                         loading="lazy"
                                     />
                                 </div>
-                                <blockquote className="text-xl text-white font-semibold mb-6 relative z-10">
-                                    <span className="text-primary text-4xl leading-none align-top mr-1">
-                                        “
-                                    </span>
+                                <blockquote className="text-lg text-gray-700 font-medium mb-5 relative z-10">
+                                    <span className="text-primary text-3xl leading-none align-top mr-1">“</span>
                                     {t.quote}
-                                    <span className="text-primary text-4xl leading-none align-bottom ml-1">
-                                        ”
-                                    </span>
+                                    <span className="text-primary text-3xl leading-none align-bottom ml-1">”</span>
                                 </blockquote>
                                 <div className="mt-auto">
-                                    <div className="font-bold text-white text-lg">
-                                        {t.name}
-                                    </div>
-                                    <div className="text-primary/80 text-sm">
-                                        {t.role}
-                                    </div>
+                                    <div className="font-semibold text-gray-900 text-base">{t.name}</div>
+                                    <div className="text-primary/80 text-xs mt-1">{t.role}</div>
                                 </div>
-                                {/* Animated border glow on hover */}
-                                <div
-                                    className="absolute inset-0 rounded-3xl pointer-events-none border-2 border-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                    aria-hidden="true"
-                                />
+                                {/* Blue border accent on hover is handled by hover:border-primary/60 above */}
                             </div>
                         </motion.div>
                     ))}
