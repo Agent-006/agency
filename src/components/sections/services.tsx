@@ -2,7 +2,8 @@
 
 import React from "react";
 import { MagicCard } from "@/components/magicui/magic-card";
-import { Spotlight } from "@/components/ui/spotlight-new";
+import { EnhancedSpotlight } from "@/components/enhanced/EnhancedSpotlight";
+import { WebGLErrorBoundary } from "@/components/error-boundaries/WebGLErrorBoundary";
 import { Badge } from "@/components/ui/badge";
 import {
     Sparkles,
@@ -70,7 +71,9 @@ const cardVariants = {
 const ServicesSection = () => {
     return (
         <section className="py-20 relative overflow-hidden bg-foreground">
-            <Spotlight />
+            <WebGLErrorBoundary fallback={<div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-background/50" />}>
+                <EnhancedSpotlight />
+            </WebGLErrorBoundary>
             <div className="container px-4 md:px-8 mx-auto relative z-10">
                 <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-100">
                     Our Services

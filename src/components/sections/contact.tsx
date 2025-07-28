@@ -10,7 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 // import { Button } from "@/components/ui/button";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Globe } from "@/components/features-section-demo-3";
+import Orb from "@/components/reactbits/Orb/Orb";
+import { WebGLErrorBoundary } from "@/components/error-boundaries/WebGLErrorBoundary";
 
 const contactSchema = z.object({
     name: z.string().min(2, "Name is required"),
@@ -38,118 +39,126 @@ const ContactSection = () => {
     };
 
     return (
-        <section className="py-20 bg-foreground">
-            <div className="container px-4 md:px-8 mx-auto">
-                <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">
-                    {/* Globe */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.7, rotate: -10 }}
-                        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                        transition={{
-                            duration: 1,
-                            type: "spring",
-                            bounce: 0.35,
-                        }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        className="flex-shrink-0 flex justify-center items-center w-full lg:w-1/2 mb-10 lg:mb-0"
-                    >
-                        <div className="w-full flex justify-center items-center">
-                            <Globe />
+        <section className="py-24 bg-black">
+            <div className="container mx-auto px-4 md:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    {/* Orb Panel */}
+                    <div className="flex flex-col items-center justify-center h-full">
+                        <WebGLErrorBoundary
+                            fallback={
+                                <div className="w-[400px] h-[400px] rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-muted-foreground">
+                                    Interactive Orb Unavailable
+                                </div>
+                            }
+                        >
+                            <div className="w-[400px] h-[400px] max-w-full">
+                                <Orb
+                                    hue={340}
+                                    hoverIntensity={0.3}
+                                    rotateOnHover={true}
+                                    forceHoverState={false}
+                                />
+                            </div>
+                        </WebGLErrorBoundary>
+                        <div className="mt-8 text-center">
+                            <h3 className="text-xl font-semibold text-primary mb-2">
+                                Let&#39;s Connect!
+                            </h3>
+                            <p className="text-muted-foreground">
+                                We love to hear from you. Reach out for
+                                collaborations, questions, or just to say hi.
+                            </p>
                         </div>
-                    </motion.div>
-                    {/* Contact Form */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: 80 }}
-                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                        transition={{
-                            duration: 1,
-                            type: "spring",
-                            bounce: 0.35,
-                            delay: 0.2,
-                        }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        className="w-full max-w-xl mx-auto"
-                    >
-                        <Card className="bg-[#18181b] border border-gray-800 rounded-2xl shadow-lg hover:shadow-2xl hover:border-primary/60 transition-all duration-300">
-                            <CardHeader>
-                                <CardTitle className="text-3xl font-bold text-white text-center mb-2">
-                                    Get in Touch
-                                </CardTitle>
-                                <p className="text-gray-400 text-center">
-                                    Fill out the form and our team will get back
-                                    to you soon.
-                                </p>
-                            </CardHeader>
-                            <CardContent>
-                                <form
-                                    className="flex flex-col gap-6"
-                                    onSubmit={handleSubmit(onSubmit)}
-                                    autoComplete="off"
-                                >
-                                    <div>
-                                        <Input
-                                            {...register("name")}
-                                            placeholder="Your Name"
-                                            className="bg-[#232329] border border-gray-700 text-white placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg px-4 py-3 transition"
-                                            disabled={isSubmitting}
-                                        />
-                                        {errors.name && (
-                                            <span className="text-sm text-red-400">
-                                                {errors.name.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <Input
-                                            {...register("email")}
-                                            placeholder="Your Email"
-                                            className="bg-[#232329] border border-gray-700 text-white placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg px-4 py-3 transition"
-                                            disabled={isSubmitting}
-                                        />
-                                        {errors.email && (
-                                            <span className="text-sm text-red-400">
-                                                {errors.email.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <Textarea
-                                            {...register("message")}
-                                            placeholder="Your Message"
-                                            rows={5}
-                                            className="bg-[#232329] border border-gray-700 text-white placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg px-4 py-3 transition resize-none"
-                                            disabled={isSubmitting}
-                                        />
-                                        {errors.message && (
-                                            <span className="text-sm text-red-400">
-                                                {errors.message.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <HoverBorderGradient
-                                        as="button"
-                                        containerClassName="w-full mt-2"
-                                        className="w-full text-base font-bold px-8 py-3 text-white bg-white/10 backdrop-blur-md rounded-full shadow-md border-0 focus:ring-2 focus:ring-primary/60 focus:outline-none transition-all duration-200"
-                                        {...{ type: "submit", disabled: isSubmitting }}
+                    </div>
+                    {/* Contact Form Card */}
+                    <div className="flex flex-col items-center justify-center w-full">
+                        <div className="w-full max-w-lg relative">
+                            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-primary via-pink-500 to-purple-600 blur-sm opacity-40"></div>
+                            <Card className="relative bg-black/80 border border-primary/50 backdrop-blur-xl rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.55)] hover:shadow-primary/50 transition-all duration-300 py-10 px-2 md:px-10 lg:px-10">
+                                <CardHeader className="mb-6">
+                                    <CardTitle className="text-4xl font-extrabold text-white text-center mb-3 tracking-tight drop-shadow-lg relative">
+                                        Contact Us
+                                        <span className="block mx-auto mt-2 w-16 h-1 bg-gradient-to-r from-primary via-pink-500 to-purple-600 rounded-full animate-pulse"></span>
+                                    </CardTitle>
+                                    <p className="text-lg text-gray-300 text-center font-medium">
+                                        Fill out the form and our team will get
+                                        back to you soon.
+                                    </p>
+                                </CardHeader>
+                                <CardContent>
+                                    <form
+                                        className="flex flex-col gap-7"
+                                        onSubmit={handleSubmit(onSubmit)}
+                                        autoComplete="off"
                                     >
-                                        {isSubmitting
-                                            ? "Sending..."
-                                            : "Send Message"}
-                                    </HoverBorderGradient>
-                                    {isSubmitSuccessful && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            className="text-green-400 text-center font-semibold"
+                                        <div>
+                                            <Input
+                                                {...register("name")}
+                                                placeholder="Your Name"
+                                                className="bg-black/60 border border-primary/40 text-white placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/40 outline-none rounded-xl px-5 py-4 text-lg shadow-sm transition"
+                                                disabled={isSubmitting}
+                                            />
+                                            {errors.name && (
+                                                <span className="text-sm text-red-400 font-medium mt-1 block">
+                                                    {errors.name.message}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <Input
+                                                {...register("email")}
+                                                placeholder="Your Email"
+                                                className="bg-black/60 border-none text-white placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/40 outline-none rounded-xl px-5 py-4 text-lg shadow-sm transition"
+                                                disabled={isSubmitting}
+                                            />
+                                            {errors.email && (
+                                                <span className="text-sm text-red-400 font-medium mt-1 block">
+                                                    {errors.email.message}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <Textarea
+                                                {...register("message")}
+                                                placeholder="Your Message"
+                                                rows={8}
+                                                className="bg-black/60 border-none text-white placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/40 outline-none rounded-xl px-5 py-4 text-lg shadow-sm transition"
+                                                disabled={isSubmitting}
+                                            />
+                                            {errors.message && (
+                                                <span className="text-sm text-red-400 font-medium mt-1 block">
+                                                    {errors.message.message}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <HoverBorderGradient
+                                            as="button"
+                                            containerClassName="w-full mt-2"
+                                            className="w-full text-lg font-bold px-10 py-2 text-white rounded-full border-none transition-all duration-200 hover:bg-gray-900/50 focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                                            {...{
+                                                type: "submit",
+                                                disabled: isSubmitting,
+                                            }}
                                         >
-                                            Thank you! Your message has been
-                                            sent.
-                                        </motion.div>
-                                    )}
-                                </form>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
+                                            {isSubmitting
+                                                ? "Sending..."
+                                                : "Send Message"}
+                                        </HoverBorderGradient>
+                                        {isSubmitSuccessful && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                className="text-green-400 text-center font-semibold mt-3 text-lg"
+                                            >
+                                                Thank you! Your message has been
+                                                sent.
+                                            </motion.div>
+                                        )}
+                                    </form>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

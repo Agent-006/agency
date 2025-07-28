@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Spotlight } from "@/components/ui/spotlight-new";
+import { EnhancedSpotlight } from "@/components/enhanced/EnhancedSpotlight";
+import { WebGLErrorBoundary } from "@/components/error-boundaries/WebGLErrorBoundary";
 import gsap from "gsap";
 import { Twitter, Github, Linkedin, Instagram, Mail } from "lucide-react";
 
@@ -86,17 +87,19 @@ const FooterSection = () => {
         >
             {/* Spotlight BG */}
             <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-                <Spotlight
-                    gradientFirst="radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(210, 100%, 85%, .10) 0, hsla(210, 100%, 55%, .03) 50%, hsla(210, 100%, 45%, 0) 80%)"
-                    gradientSecond="radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .08) 0, hsla(210, 100%, 55%, .03) 80%, transparent 100%)"
-                    gradientThird="radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .06) 0, hsla(210, 100%, 45%, .03) 80%, transparent 100%)"
-                    translateY={-250}
-                    width={600}
-                    height={900}
-                    smallWidth={260}
-                    duration={8}
-                    xOffset={80}
-                />
+                <WebGLErrorBoundary fallback={<div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-background/50" />}>
+                    <EnhancedSpotlight
+                        gradientFirst="radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(210, 100%, 85%, .10) 0, hsla(210, 100%, 55%, .03) 50%, hsla(210, 100%, 45%, 0) 80%)"
+                        gradientSecond="radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .08) 0, hsla(210, 100%, 55%, .03) 80%, transparent 100%)"
+                        gradientThird="radial-gradient(50% 50% at 50% 50%, hsla(210, 100%, 85%, .06) 0, hsla(210, 100%, 45%, .03) 80%, transparent 100%)"
+                        translateY={-250}
+                        width={600}
+                        height={900}
+                        smallWidth={260}
+                        duration={8}
+                        xOffset={80}
+                    />
+                </WebGLErrorBoundary>
             </div>
             <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between gap-12">
                 {/* Left: Brand & Social */}

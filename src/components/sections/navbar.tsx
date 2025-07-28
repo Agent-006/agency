@@ -100,7 +100,7 @@ export function NavigationMenuBar() {
                         </SheetTrigger>
                         <SheetContent
                             side="left"
-                            className="p-0 w-72 bg-white/90 dark:bg-zinc-900/95 border-r border-white/20 backdrop-blur-lg overflow-y-auto max-h-screen flex flex-col"
+                            className="p-0 w-72 bg-white/10 backdrop-blur-lg border-r border-white/20 overflow-y-auto max-h-screen flex flex-col shadow-2xl"
                         >
                             <SheetTitle asChild>
                                 <VisuallyHidden>
@@ -108,7 +108,7 @@ export function NavigationMenuBar() {
                                 </VisuallyHidden>
                             </SheetTitle>
                             <div className="flex items-center px-6 py-4 border-b border-white/10">
-                                <span className="text-2xl font-extrabold tracking-tight text-black dark:text-white select-none">
+                                <span className="text-2xl font-extrabold tracking-tight text-white dark:text-white select-none">
                                     Agency
                                 </span>
                             </div>
@@ -116,13 +116,13 @@ export function NavigationMenuBar() {
                                 <SheetClose asChild>
                                     <Link
                                         href="/"
-                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-black dark:text-white hover:bg-primary/10 transition"
+                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-white dark:text-white hover:bg-primary/10 transition"
                                     >
                                         Home
                                     </Link>
                                 </SheetClose>
                                 <details className="group">
-                                    <summary className="px-4 py-3 rounded-xl font-semibold text-black dark:text-white hover:bg-primary/10 transition cursor-pointer select-none">
+                                    <summary className="px-4 py-3 rounded-xl font-semibold text-white dark:text-white hover:bg-primary/10 transition cursor-pointer select-none">
                                         Service
                                     </summary>
                                     <ul className="pl-4 mt-2 flex flex-col gap-1">
@@ -131,13 +131,15 @@ export function NavigationMenuBar() {
                                                 <SheetClose asChild>
                                                     <Link
                                                         href={component.href}
-                                                        className="block px-2 py-2 rounded-lg text-sm text-black dark:text-white hover:bg-primary/10 transition"
+                                                        className="block px-2 py-2 rounded-lg text-sm text-white dark:text-white hover:bg-primary/10 transition"
                                                     >
                                                         <div className="font-medium">
                                                             {component.title}
                                                         </div>
                                                         <div className="text-xs opacity-70">
-                                                            {component.description}
+                                                            {
+                                                                component.description
+                                                            }
                                                         </div>
                                                     </Link>
                                                 </SheetClose>
@@ -148,7 +150,7 @@ export function NavigationMenuBar() {
                                 <SheetClose asChild>
                                     <Link
                                         href="/about"
-                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-black dark:text-white hover:bg-primary/10 transition"
+                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-white dark:text-white hover:bg-primary/10 transition"
                                     >
                                         About
                                     </Link>
@@ -156,7 +158,7 @@ export function NavigationMenuBar() {
                                 <SheetClose asChild>
                                     <Link
                                         href="/blog"
-                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-black dark:text-white hover:bg-primary/10 transition"
+                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-white dark:text-white hover:bg-primary/10 transition"
                                     >
                                         Blog
                                     </Link>
@@ -164,7 +166,7 @@ export function NavigationMenuBar() {
                                 <SheetClose asChild>
                                     <Link
                                         href="/projects"
-                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-black dark:text-white hover:bg-primary/10 transition"
+                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-white dark:text-white hover:bg-primary/10 transition"
                                     >
                                         Projects
                                     </Link>
@@ -172,14 +174,14 @@ export function NavigationMenuBar() {
                                 <SheetClose asChild>
                                     <Link
                                         href="/contact"
-                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-black dark:text-white hover:bg-primary/10 transition"
+                                        className="block w-full px-4 py-3 rounded-xl font-semibold text-white dark:text-white hover:bg-primary/10 transition"
                                     >
                                         Contact Us
                                     </Link>
                                 </SheetClose>
                             </nav>
                             <div className="px-6 pb-6">
-                                <Button className="w-full rounded-full px-7 py-3 font-bold shadow-lg bg-primary text-black border-0 hover:bg-primary/90 hover:shadow-primary/40 hover:shadow-lg transition-all duration-200">
+                                <Button className="w-full rounded-full px-7 py-3 font-bold shadow-lg bg-primary text-white border-0 hover:bg-primary/90 hover:shadow-primary/40 hover:shadow-lg transition-all duration-200">
                                     Get Free Consultation
                                 </Button>
                             </div>
@@ -192,7 +194,12 @@ export function NavigationMenuBar() {
                         aria-label="Agency Home"
                         tabIndex={-1}
                     >
-                        <span className="text-xl font-extrabold tracking-tight text-white drop-shadow-lg px-2 py-0.5 rounded-lg bg-gradient-to-r from-primary to-cyan-400/80 bg-clip-text" style={{letterSpacing: '0.04em'}}>Agency</span>
+                        <span
+                            className="text-xl font-extrabold tracking-tight text-white drop-shadow-lg px-2 py-0.5 rounded-lg bg-gradient-to-r from-primary to-cyan-400/80 bg-clip-text"
+                            style={{ letterSpacing: "0.04em" }}
+                        >
+                            Agency
+                        </span>
                     </Link>
                 </div>
                 {/* Desktop Navigation */}
@@ -251,12 +258,9 @@ export function NavigationMenuBar() {
                                         <NavigationMenuLink
                                             asChild
                                             id="nav-home"
-                                            className={
-                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
-                                                (isActive("/")
-                                                    ? " font-bold"
-                                                    : "")
-                                            }
+                                            className={`px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative ${
+                                                isActive("/") ? "font-bold" : ""
+                                            }`}
                                             ref={(el) => {
                                                 if (
                                                     el &&
@@ -287,11 +291,11 @@ export function NavigationMenuBar() {
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
                                     <NavigationMenuItem>
-                                        <NavigationMenuTrigger className="px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative">
+                                        <NavigationMenuTrigger className="px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 relative">
                                             Service
                                         </NavigationMenuTrigger>
-                                        <NavigationMenuContent className=" backdrop-blur-md border text-white shadow-2xl rounded-2xl mt-2">
-                                            <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] p-4">
+                                        <NavigationMenuContent className="bg-transparent backdrop-blur-md border text-white shadow-2xl rounded-2xl mt-2">
+                                            <ul className="bg-transparent backdrop-blur-md grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] p-4">
                                                 {components.map((component) => (
                                                     <ListItem
                                                         key={component.title}
@@ -308,13 +312,11 @@ export function NavigationMenuBar() {
                                         <NavigationMenuLink
                                             asChild
                                             id="nav-about"
-                                            className={
-                                                navigationMenuTriggerStyle() +
-                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
-                                                (isActive("/about")
-                                                    ? " font-bold"
-                                                    : "")
-                                            }
+                                            className={`px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative ${
+                                                isActive("/about")
+                                                    ? "font-bold"
+                                                    : ""
+                                            }`}
                                             ref={(el) => {
                                                 if (
                                                     el &&
@@ -348,13 +350,11 @@ export function NavigationMenuBar() {
                                         <NavigationMenuLink
                                             asChild
                                             id="nav-blog"
-                                            className={
-                                                navigationMenuTriggerStyle() +
-                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
-                                                (isActive("/blog")
-                                                    ? " font-bold"
-                                                    : "")
-                                            }
+                                            className={`px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative ${
+                                                isActive("/blog")
+                                                    ? "font-bold"
+                                                    : ""
+                                            }`}
                                             ref={(el) => {
                                                 if (
                                                     el &&
@@ -388,13 +388,11 @@ export function NavigationMenuBar() {
                                         <NavigationMenuLink
                                             asChild
                                             id="nav-projects"
-                                            className={
-                                                navigationMenuTriggerStyle() +
-                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
-                                                (isActive("/projects")
-                                                    ? " font-bold"
-                                                    : "")
-                                            }
+                                            className={`px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative ${
+                                                isActive("/projects")
+                                                    ? "font-bold"
+                                                    : ""
+                                            }`}
                                             ref={(el) => {
                                                 if (
                                                     el &&
@@ -430,13 +428,11 @@ export function NavigationMenuBar() {
                                         <NavigationMenuLink
                                             asChild
                                             id="nav-contact"
-                                            className={
-                                                navigationMenuTriggerStyle() +
-                                                ` px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative` +
-                                                (isActive("/contact")
-                                                    ? " font-bold"
-                                                    : "")
-                                            }
+                                            className={`px-5 py-2 rounded-full bg-transparent text-white shadow-md transition-all duration-200 hover:bg-transparent hover:text-blue-100 relative ${
+                                                isActive("/contact")
+                                                    ? "font-bold"
+                                                    : ""
+                                            }`}
                                             ref={(el) => {
                                                 if (
                                                     el &&
